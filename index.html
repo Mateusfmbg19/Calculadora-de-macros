@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="pt-BR" id="htmlRoot">
+<!DOCTYPE html>
+<html lang="pt-BR" id="htmlRoot">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,75 +11,111 @@
   <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt"></script>
 </head>
+
 <body>
   <header class="topo-logo visual-logo">
     <div class="logo-container">
-    <img src="Macrofit2.png" alt="MacroFit Logo" />
-     </div>
-  </header>  
+      <img src="Macrofit2.png" alt="MacroFit Logo" />
+    </div>
+  </header>
+
   <div class="theme-toggle">
     <button id="toggleTheme">Modo Claro/Escuro</button>
-  </div>  <div class="container">
+  </div>
+
+  <div class="container">
     <h1>MacroFit</h1>
     <form id="macroForm">
       <label for="idade">Idade</label>
-      <input type="number" id="idade" required /><label for="peso">Peso (kg)</label>
-  <input type="number" id="peso" required />
+      <input type="number" id="idade" required />
 
-  <label for="altura">Altura (cm)</label>
-  <input type="number" id="altura" required />
+      <label for="peso">Peso (kg)</label>
+      <input type="number" id="peso" required />
 
-  <label for="sexo">Sexo</label>
-  <select id="sexo" required>
-    <option value="">Selecione</option>
-    <option value="masculino">Masculino</option>
-    <option value="feminino">Feminino</option>
-  </select>
+      <label for="altura">Altura (cm)</label>
+      <input type="number" id="altura" required />
 
-  <label for="atividade">Atividade Física</label>
-  <select id="atividade" required>
-    <option value="">Selecione</option>
-    <option value="1.2">Sedentário</option>
-    <option value="1.375">Leve</option>
-    <option value="1.55">Moderado</option>
-    <option value="1.725">Intenso</option>
-    <option value="1.9">Muito Intenso</option>
-  </select>
+      <label for="sexo">Sexo</label>
+      <select id="sexo" required>
+        <option value="">Selecione</option>
+        <option value="masculino">Masculino</option>
+        <option value="feminino">Feminino</option>
+      </select>
 
-  <label for="objetivo">Objetivo</label>
-  <select id="objetivo" required>
-    <option value="">Selecione</option>
-    <option value="perder">Perder gordura</option>
-    <option value="manter">Manter peso</option>
-    <option value="ganhar">Ganhar massa</option>
-  </select>
+      <label for="atividade">Atividade Física</label>
+      <select id="atividade" required>
+        <option value="">Selecione</option>
+        <option value="1.2">Sedentário</option>
+        <option value="1.375">Leve</option>
+        <option value="1.55">Moderado</option>
+        <option value="1.725">Intenso</option>
+        <option value="1.9">Muito Intenso</option>
+      </select>
 
-  <button type="submit" id="btnCalcular">Calcular</button>
-</form>
+      <label for="objetivo">Objetivo</label>
+      <select id="objetivo" required>
+        <option value="">Selecione</option>
+        <option value="perder">Perder gordura</option>
+        <option value="manter">Manter peso</option>
+        <option value="ganhar">Ganhar massa</option>
+      </select>
 
-<div id="resultado" class="hidden">
-  <h2>Resultados</h2>
-  <div class="cards">
-    <div id="caloriasCard" class="tilt"></div>
-    <div id="proteinasCard" class="tilt"></div>
-    <div id="gordurasCard" class="tilt"></div>
-    <div id="carboCard" class="tilt"></div>
+      <button type="submit" id="btnCalcular">Calcular</button>
+    </form>
+
+    <div id="resultado" class="hidden">
+      <h2>Resultados</h2>
+      <div class="cards">
+        <div id="caloriasCard" class="tilt"></div>
+        <div id="proteinasCard" class="tilt"></div>
+        <div id="gordurasCard" class="tilt"></div>
+        <div id="carboCard" class="tilt"></div>
+      </div>
+
+      <canvas id="graficoMacros"></canvas>
+      <div id="planoAlimentar"></div>
+
+      <div class="acoes">
+        <button id="copiarPlano">Copiar Plano</button>
+        <button id="baixarPDF">Baixar PDF</button>
+        <button id="compartilhar">Compartilhar</button>
+      </div>
+    </div>
   </div>
 
-  <canvas id="graficoMacros"></canvas>
-  <div id="planoAlimentar"></div>
+  <!-- Botão de abrir/fechar Chat -->
+  <button id="toggleChat" class="chat-toggle-btn">
+    <span id="chatIcon">💬</span>
+  </button>
 
-  <div class="acoes">
-    <button id="copiarPlano">Copiar Plano</button>
-    <button id="baixarPDF">Baixar PDF</button>
-    <button id="compartilhar">Compartilhar</button>
+  <!-- Chatbot (escondido até abrir) -->
+  <div class="chatbot-container hidden" id="chatbotContainer">
+    <div class="chatbot-header">
+      <h3>Assistente MacroFit</h3>
+    </div>
+    <div class="chatbot-body">
+      <div class="chat-messages" id="chatMessages">
+        <!-- Mensagens serão inseridas dinamicamente -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Digite sua pergunta..." autocomplete="off" />
+        <button id="sendMessage">Enviar</button>
+      </div>
+      <div class="quick-questions">
+        <!-- Botões rápidos inseridos via JavaScript -->
+      </div>
+    </div>
   </div>
-</div>
 
-  </div>  <section class="nota">
+  <section class="nota">
     <h4>Nota Técnica</h4>
     <p>Os cálculos de TMB (Taxa Metabólica Basal) são baseados na fórmula de Mifflin-St Jeor, amplamente utilizada na nutrição esportiva. A distribuição de macronutrientes segue diretrizes médias para indivíduos fisicamente ativos, com ajustes conforme o objetivo selecionado.</p>
-  </section>  <footer>
+  </section>
+
+  <footer>
     <p>Desenvolvido com Acode - Projeto pessoal MacroFit</p>
-  </footer>  <script src="script.js"></script></body>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>
